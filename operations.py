@@ -1,5 +1,6 @@
 import random
 import string
+from copy import deepcopy
 
 # will return the maxLength of the sheet of material
 def getLength(listShapes):
@@ -264,7 +265,6 @@ def mutation(sheet, maxL, maxW, shape):
 
 
 def mutationSelfAdapt(length, mutation, up_count, down_count, string):
-	
 	if length == up_count:
 		mutation = mutation + 0.001
 		up_count = 0
@@ -280,3 +280,64 @@ def mutationSelfAdapt(length, mutation, up_count, down_count, string):
 		return mutation, up_count
 	elif string == "mutate":
 		return mutation, down_count
+
+
+def ParetoFront(currentPareto, offspring, offspringFitness):
+	# This Evals Pareto Front Holder
+	P1 = []
+	P1_Fitness = []
+
+	# Keeps the current dominant solution
+	bestX = 0
+	bestY = 0
+
+	for i in range(len(offspringFitness)):
+		fitnessX, fitnessY = offspringFitness[i]
+		
+		if (bestX < fitnessX and bestY <= fitnessY) or (bestY < fitnessY and bestX <= fitnessX):
+			# Used when a new dominate solution is found
+			pTemp = []
+			pTemp_Fitness = []
+			P1_fitnessX = 0
+			P1_fitnessY = 0
+
+			# setting new best fitness values
+			bestX = fitnessX
+			bestY = fitnessY
+
+			pTemp.append(offspring[i])
+			pTemp_Fitness.append(offspringFitness[i])
+
+			for i in range(len(P1_Fitness)):
+				P1_fitnessX, P1_fitnessY = P1_Fitness[i]
+
+				if bestX < fitnessX and bestY > fitnessY or bestY < fitnessY and bestX > fitnessX:
+					pTemp.append(P1[i])
+					pTemp_Fitness.append(P1_Fitness[i])
+
+			P1 = deepcopy(pTemp)
+			P1_Fitness = deepcopy(pTemp_Fitness)
+
+
+		elif bestX < fitnessX and bestY > fitnessY or bestY < fitnessY and bestX > fitnessX:
+			P1.append(offspring[i])
+			P1_Fitness.append(offspringFitness[i])
+
+	if currentPareto >= P1:
+		P1 = deepcopy(currentPareto)
+
+	return P1
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -123,11 +123,16 @@ def main():
 
 	# User wants the EA run
 	elif config[1] == "EA = 1":
+		# Holds the best Pareto Front throughout the entire program, used to make solution file
+		Best_Pareto_Front = []
 		# Seeds the random function using a saved value that is put into the log file
 		random.seed(container.seed)
 
 		# opening the log file 
 		result_log = open(container.prob_log_file_EA, 'w')
+		# Just making it easier for the statistical analysis
+		stat_log = open("prob1_best_fitness_run1.txt", 'w')
+
 		# formatting the result log with Result Log at the top and parameters used
 		result_log.write("Result Log \n")
 		result_log.write("Problem Instance Path = ../%s \n" % sys.argv[2])
@@ -155,7 +160,7 @@ def main():
 
 			# Titles each section with Run i, where i is the run number (1-30)
 			result_log.write("Run " + str(run) + "\n")
-			print("Run " + str(run) + "\n")
+			print("Run " + str(run))
 			
 			'''------INITIALIZATION------'''
 			for person in range(0, container.populationSize):
@@ -316,20 +321,11 @@ def main():
 					current_Y_fitness = operations.fitnessCalc(container.maxWidth, usedWidth)
 
 					# If the current solution is the best, replace the current solution with the new solution
-					if container.solution_fitness < current_X_fitness:
-						# set the new solution fitness value
-						container.solution_fitness = current_X_fitness
-
-						# Write the shape configuration to the solution file
-						solution_file = open(container.prob_solution_file_EA, 'w')
-
-						solution_file.write("Solution File \n\n")
-						for i in range(0, len(mutated_offspring)):
-							solution_file.write(str(mutated_offspring[i])[1:-1] + "\n")
+					'''for i in range(0, len(mutated_offspring)):
+						solution_file.write(str(mutated_offspring[i])[1:-1] + "\n")'''
 
 					# Make a list of fitness values associated with each person in the population
 					container.mutated_offspring_fitness.append((current_X_fitness, current_Y_fitness))
-
 
 					'''------Termination------'''
 					if container.numEvals == 1 and int(container.numEvalsTerminate) == index:
@@ -380,6 +376,12 @@ def main():
 				container.population_locations = deepcopy(container.offspring)
 				container.population_fitness_values = deepcopy(container.offspring_fitness)
 
+
+				'''----------Obtaining Best Pareto Front----------'''
+				# Determines whether or not this evaluation is the current best Pareto Front
+				Best_Pareto_Front = deepcopy(operations.ParetoFront(Best_Pareto_Front, container.offspring, container.offspring_fitness))
+
+
 				'''------Result Log Formatting Evaluations------'''
 				average_run_fitness_X = 0
 				average_run_fitness_Y = 0
@@ -418,11 +420,45 @@ def main():
 
 				if fitness % 20 == 0:
 					print(str(fitness) + "	" + str("%.2f" % average_run_fitness_X) + "	" + str(best_run_fitness_X) + "	" + str("%.2f" % average_run_fitness_Y) +  "	" + str(best_run_fitness_Y))
+				if fitness % 10000 == 0:
+					stat_log.write(str(best_run_fitness_X) + "	" + str(best_run_fitness_Y) + "\n")
+					print("\n")
+			
 			# formatting the result log with a space after each run block
 			result_log.write("\n")
 
+			'''------Solution------'''
+			# At the end of each run write the best Pareto Front to the solution file
+			solution_file = open(container.prob_solution_file_EA, 'w')
+
+			solution_file.write(str(len(Best_Pareto_Front)) + "\n")
+
+			for sheet in Best_Pareto_Front:
+				solution_file.write("\n")
+				for i in range(0, len(sheet)):
+					solution_file.write(str(sheet[i])[1:-1] + "\n")
+
+			print(Best_Pareto_Front)
+
+			solution_file.close()
+
 		result_log.close()
 
+
+		'''------Solution------'''
+		# At the end of each run write the best Pareto Front to the solution file
+		solution_file = open(container.prob_solution_file_EA, 'w')
+
+		solution_file.write(str(len(Best_Pareto_Front)) + "\n")
+
+		for sheet in Best_Pareto_Front:
+			solution_file.write("\n")
+			for i in range(0, len(sheet)):
+				solution_file.write(str(sheet[i])[1:-1] + "\n")
+
+		print(Best_Pareto_Front)
+
+		solution_file.close()
 
 if __name__ == '__main__':
 	main()
