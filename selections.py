@@ -18,11 +18,11 @@ def fitnessSelection(locations, fitness_values, kParent):
 	parents = []
 
 	# Get absolute fitness of population
-	for i in fitness_values:
+	for i,_ in fitness_values:
 		total_fitness += i
 		
 	# obtain FPS probability for each individual
-	for num in fitness_values:
+	for num,_ in fitness_values:
 		fitness_prob.append(num/total_fitness)
 
 	for i in range(0, int(kParent)):
