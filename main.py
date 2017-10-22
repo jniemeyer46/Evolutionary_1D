@@ -320,10 +320,6 @@ def main():
 					current_X_fitness = operations.fitnessCalc(container.maxLength, usedLength)
 					current_Y_fitness = operations.fitnessCalc(container.maxWidth, usedWidth)
 
-					# If the current solution is the best, replace the current solution with the new solution
-					'''for i in range(0, len(mutated_offspring)):
-						solution_file.write(str(mutated_offspring[i])[1:-1] + "\n")'''
-
 					# Make a list of fitness values associated with each person in the population
 					container.mutated_offspring_fitness.append((current_X_fitness, current_Y_fitness))
 
