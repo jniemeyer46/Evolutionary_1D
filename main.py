@@ -334,7 +334,7 @@ def main():
 						count = 0
 						end = False
 
-						for num in container.mutated_offspring_fitness:
+						for num,_ in container.mutated_offspring_fitness:
 							if count >= int(container.n) - 1:
 								end = True
 							elif int(num) == int(round(average_run_fitness)):
