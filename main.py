@@ -423,21 +423,6 @@ def main():
 			# formatting the result log with a space after each run block
 			result_log.write("\n")
 
-			'''------Solution------'''
-			# At the end of each run write the best Pareto Front to the solution file
-			solution_file = open(container.prob_solution_file_EA, 'w')
-
-			solution_file.write(str(len(Best_Pareto_Front)) + "\n")
-
-			for sheet in Best_Pareto_Front:
-				solution_file.write("\n")
-				for i in range(0, len(sheet)):
-					solution_file.write(str(sheet[i])[1:-1] + "\n")
-
-			print(Best_Pareto_Front)
-
-			solution_file.close()
-
 		result_log.close()
 
 
