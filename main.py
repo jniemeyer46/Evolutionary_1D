@@ -131,7 +131,7 @@ def main():
 		# opening the log file 
 		result_log = open(container.prob_log_file_EA, 'w')
 		# Just making it easier for the statistical analysis
-		stat_log = open("prob1_best_fitness_run1.txt", 'w')
+		stat_log = open("prob2_best_fitness_run2.txt", 'w')
 
 		# formatting the result log with Result Log at the top and parameters used
 		result_log.write("Result Log \n")
