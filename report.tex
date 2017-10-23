@@ -1,0 +1,525 @@
+\documentclass[•]{article}
+\usepackage{graphicx}
+\usepackage{listings}
+\graphicspath{ {/Users/jjniemeyer46/Desktop/Pics/EC_1d} }
+
+\usepackage{color}
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+}
+\lstset{style=mystyle}
+
+\author{John Niemeyer\\JJNB78@mst.edu}
+\title{COMP SCI 5401 FS2017 Assignment 1d}
+
+\begin{document}
+\maketitle
+
+\section*{\begin{center}MOEA Explained\end{center}}
+
+For my MOEA I decided that my Pareto Fronts would be based off the first objective fitness vs. the second objective fitness.  Since we did not care about the lower fitness fronts, I was able to ignore any Pareto Fronts that were below P1 (the best Pareto Front so far).  This means that i had to use a temp list when I found a new dominant Pareto Front due to having to remove the previous dominant Pareto Front "king," which i did by going through the current Pareto Front and seeing if the older values work with the newer dominant front.  If it does I added it to the temp list (which already contained the newest dominant Pareto Front), when finished with going through the previous best Pareto Front I deepcopy the temp list to P1 and the temp list becomes the new Best Pareto Front.
+
+\section*{\begin{center} Investigation \end{center}}
+
+The trade-off between the best Pareto Front and the diversity of the obtained Pareto Front for all of my datasets would be that the generated solutions are extremely clustered... In fact, there are a lot of overlaps between the points within these Pareto Fronts.  This is due to the extremely small change in the second objective fitness, which forces them to cluster closer together, even if the first objective fitness is extremely spread-out.  
+
+Overall my datasets for each problem were fairly close together in the end, meaning that the results were very loosely tied to the strategy parameters.  There was no a clear winner throughout all of my datasets which means that I needed to change a parameter in order to get a better set of results and I failed to do so.
+
+\section*{\begin{center} Experiment parameters and graphs \end{center}}
+\section{Problem 1a}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob1a_graph}
+
+\subsection{Result Tables}
+Problem 1a: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob1a_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob1a_best}
+\noindent \includegraphics [scale=0.65] {/prob1a_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -0.21508 and the t-value of -0.98697, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config1a.txt 
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob1_random_log.txt
+prob_log_EA: logs/prob1_EA_log_a.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob1_random_solution.txt
+prob_solution_EA: solutions/prob1_EA_solution_a.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 1, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 0
+
+Survival_Strategy: plus: 1, comma: 0
+
+Survival_Selection: Uniform_random_survival: 0, Truncation: 1, k-Tournament_Selection_without_replacement: 0
+
+Termination: Number_of_evals: 0, no_change_in_average_population_fitness_for_n_generations: 1, no_change_in_best_fitness_in_population_for_n_generations: 0
+\end{lstlisting}
+
+\section{Problem 1b}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob1b_graph}
+
+\subsection{Result Tables}
+Problem 1b: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob1b_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob1b_best}
+\noindent \includegraphics [scale=0.65] {/prob1b_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -0.01182 and the t-value of -1.02597, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+
+USING config1b.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob1_random_log.txt
+prob_log_EA: logs/prob1_EA_log_c.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob1_random_solution.txt
+prob_solution_EA: solutions/prob1_EA_solution_c.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 1, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 1
+
+Survival_Strategy: plus: 1, comma: 0
+
+Survival_Selection: Uniform_random_survival: 0, Truncation: 1, k-Tournament_Selection_without_replacement: 0
+
+Termination: Number_of_evals: 0, no_change_in_average_population_fitness_for_n_generations: 1, no_change_in_best_fitness_in_population_for_n_generations: 0
+\end{lstlisting}
+
+\section{Problem 1c}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob1c_graph}
+
+\subsection{Result Tables}
+Problem 1c: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob1c_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob1c_best}
+\noindent \includegraphics [scale=0.65] {/prob1c_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of 0.02299 and the t-value of -1.02218, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config1c.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob1_random_log.txt
+prob_log_EA: logs/prob1_EA_log_c.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob1_random_solution.txt
+prob_solution_EA: solutions/prob1_EA_solution_c.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 0, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 1
+
+Survival_Strategy: plus: 0, comma: 1
+
+Survival_Selection: Uniform_random_survival: 1, Truncation: 0, k-Tournament_Selection_without_replacement: 0
+
+Termination: Number_of_evals: 1, no_change_in_average_population_fitness_for_n_generations: 0, no_change_in_best_fitness_in_population_for_n_generations: 0
+\end{lstlisting}
+
+\section{Problem 2a}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob2a_graph}
+
+\pagebreak
+\subsection{Result Tables}
+Problem 2a: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob2a_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob2a_best}
+\noindent \includegraphics [scale=0.65] {/prob2a_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -0.12478 and the t-value of -1.05872, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config2a.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob2_random_log.txt
+prob_log_EA: logs/prob2_EA_log_a.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob2_random_solution.txt
+prob_solution_EA: solutions/prob2_EA_solution_a.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 0, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 1
+
+Survival_Strategy: plus: 0, comma: 1
+
+Survival_Selection: Uniform_random_survival: 0, Truncation: 1, k-Tournament_Selection_without_replacement: 0
+
+Termination: Number_of_evals: 0, no_change_in_average_population_fitness_for_n_generations: 0, no_change_in_best_fitness_in_population_for_n_generations: 1
+\end{lstlisting}
+
+\section{Problem 2b}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob2b_graph}
+
+\pagebreak
+\subsection{Result Tables}
+Problem 2b: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob2b_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob2b_best}
+\noindent \includegraphics [scale=0.65] {/prob2b_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -0.07914 and the t-value of -1.04993, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config2b.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob2_random_log.txt
+prob_log_EA: logs/prob2_EA_log_b.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob2_random_solution.txt
+prob_solution_EA: solutions/prob2_EA_solution_b.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 1, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 0
+
+Survival_Strategy: plus: 0, comma: 1
+
+Survival_Selection: Uniform_random_survival: 1, Truncation: 0, k-Tournament_Selection_without_replacement: 0
+
+Termination: Number_of_evals: 0, no_change_in_average_population_fitness_for_n_generations: 0, no_change_in_best_fitness_in_population_for_n_generations: 1
+\end{lstlisting}
+
+\section{Problem 2c}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob2c_graph}
+
+\pagebreak
+\subsection{Result Tables}
+Problem 2c: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob2c_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob2c_best}
+\noindent \includegraphics [scale=0.65] {/prob2c_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -0.06815 and the t-value of -1.05372, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config2c.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob2_random_log.txt
+prob_log_EA: logs/prob2_EA_log_b.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob2_random_solution.txt
+prob_solution_EA: solutions/prob2_EA_solution_b.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 0, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 1
+
+Survival_Strategy: plus: 1, comma: 0
+
+Survival_Selection: Uniform_random_survival: 0, Truncation: 0, k-Tournament_Selection_without_replacement: 1
+
+Termination: Number_of_evals: 0, no_change_in_average_population_fitness_for_n_generations: 0, no_change_in_best_fitness_in_population_for_n_generations: 1
+\end{lstlisting}
+
+\section{Problem 3a}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob3a_graph}
+
+\pagebreak
+\subsection{Result Tables}
+Problem 3a: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob3a_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob3a_best}
+\noindent \includegraphics [scale=0.65] {/prob3a_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -0.93403 and the t-value of -1.04975, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config3a.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob3_random_log.txt
+prob_log_EA: logs/prob3_EA_log_a.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob3_random_solution.txt
+prob_solution_EA: solutions/prob3_EA_solution_a.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 1, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 0
+
+Survival_Strategy: plus: 0, comma: 1
+
+Survival_Selection: Uniform_random_survival: 1, Truncation: 0, k-Tournament_Selection_without_replacement: 0
+
+Termination: Number_of_evals: 0, no_change_in_average_population_fitness_for_n_generations: 0, no_change_in_best_fitness_in_population_for_n_generations: 1
+\end{lstlisting}
+
+\section{Problem 3b}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob3b_graph}
+
+\pagebreak
+\subsection{Result Tables}
+Problem 3b: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob3b_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob3b_best}
+\noindent \includegraphics [scale=0.65] {/prob3b_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -1.04453 and the t-value of -0.98839, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config3b.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob3_random_log.txt
+prob_log_EA: logs/prob3_EA_log_c.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob3_random_solution.txt
+prob_solution_EA: solutions/prob3_EA_solution_c.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 0, Fitness_Proportional_Selection: 1, k-Tournament_Selection_with_replacement: 0
+
+Survival_Strategy: plus: 1, comma: 0
+
+Survival_Selection: Uniform_random_survival: 0, Truncation: 1, k-Tournament_Selection_without_replacement: 0
+
+Termination: Number_of_evals: 1, no_change_in_average_population_fitness_for_n_generations: 0, no_change_in_best_fitness_in_population_for_n_generations: 0
+\end{lstlisting}
+
+\section{Problem 3c}
+
+\subsection{Graphs}
+\noindent \includegraphics [scale=0.65] {/prob3c_graph}
+
+\pagebreak
+\subsection{Result Tables}
+Problem 3c: final results\\\\
+\noindent \includegraphics [scale=0.65] {/prob3c_results}
+
+\subsection{Statistical Analysis}
+\noindent \includegraphics [scale=0.65] {/prob3c_best}
+\noindent \includegraphics [scale=0.65] {/prob3c_average}\\\\
+\indent So according to the statistical analysis (shown above) the p-value for both best fitness and average fitness is not low enough to say that the results are statistically significant.  That means that the t-value of -0.87954 and the t-value of -1.06829, computed using the tables given, were not far enough apart from the t-value given of 2.045 to make the difference in the fitness values statistically significant.
+
+\pagebreak
+\subsection{EA Configurations}
+If you want to get the same results you have to change the newSeed variable to 0 (Zero) in the configuration file in order to use the previous seed.\\\\
+
+USING config3c.txt
+\begin{lstlisting}
+Random = 0
+EA = 1
+newSeed = 1
+
+mu: 20
+lambda: 10
+runs: 30
+mutation_rate: 0.01
+fitness_evaluations: 10000
+prob_log_random: logs/prob3_random_log.txt
+prob_log_EA: logs/prob3_EA_log_c.txt
+number_of_evals_till_termination: 5
+tournament_size_for_parent_selection: 10
+tournament_size_for_survival_selection: 10
+n_for_termination_convergence_criterion: 5
+prob_solution_random: solutions/prob3_random_solution.txt
+prob_solution_EA: solutions/prob3_EA_solution_c.txt
+seed: time.time()
+
+selfAdaptive: adaptMutation: 1
+
+Initialization: Uniform_Random: 1
+
+Parent_Selection: Uniform_random_parent: 0, Fitness_Proportional_Selection: 0, k-Tournament_Selection_with_replacement: 1
+
+Survival_Strategy: plus: 0, comma: 1
+
+Survival_Selection: Uniform_random_survival: 0, Truncation: 0, k-Tournament_Selection_without_replacement: 1
+
+Termination: Number_of_evals: 0, no_change_in_average_population_fitness_for_n_generations: 0, no_change_in_best_fitness_in_population_for_n_generations: 1
+\end{lstlisting}
+
+\end{document}
